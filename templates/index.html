@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediksi Penempatan Mahasiswa | Random Forest</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container fade-in">
+
+    <h1>🎓 Prediksi Penempatan Mahasiswa</h1>
+        <div class="subtitle-box">
+        <p class="subtitle">
+            Aplikasi ini memprediksi kemungkinan mahasiswa <b>diterima kerja (placement)</b>
+            berdasarkan profil akademik, soft skill, dan pengalaman magang.
+        </p>
+        <p class="subtitle small">
+            Isi data mahasiswa di bawah, atau klik tombol <b>contoh</b> untuk mencoba.
+        </p>
+        </div>
+
+
+    <div class="example-buttons">
+      <button type="button" class="example-btn blue" onclick="fillExample('placed')">Contoh Diterima Kerja</button>
+      <button type="button" class="example-btn gray" onclick="fillExample('not')">Contoh Tidak Diterima</button>
+    </div>
+
+    <form action="/predict" method="POST" class="form-box" id="predictionForm">
+      <div class="grid">
+        <label>IQ:</label><input type="number" step="0.1" name="iq" id="iq" required>
+        <label>Nilai Semester Terakhir:</label><input type="number" step="0.1" name="prev_sem" id="prev_sem" required>
+        <label>CGPA (IPK):</label><input type="number" step="0.1" name="cgpa" id="cgpa" required>
+        <label>Nilai Akademik:</label><input type="number" step="0.1" name="academic_perf" id="academic_perf" required>
+        <label>Pengalaman Magang:</label>
+        <select name="internship" id="internship" required>
+          <option value="">-- Pilih --</option>
+          <option value="Yes">Ya</option>
+          <option value="No">Tidak</option>
+        </select>
+        <label>Nilai Ekstrakurikuler:</label><input type="number" step="0.1" name="extracurricular" id="extracurricular" required>
+        <label>Kemampuan Komunikasi:</label><input type="number" step="0.1" name="communication" id="communication" required>
+        <label>Jumlah Proyek:</label><input type="number" name="projects" id="projects" required>
+      </div>
+      <button type="submit" class="btn">Prediksi Sekarang</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result-box">
+        <h2>{{ prediction }}</h2>
+        <p class="probability">Probabilitas: <b>{{ probability }}</b></p>
+        <button class="clear-btn" onclick="clearResult()">🧹 Clear Hasil</button>
+      </div>
+    {% elif error %}
+      <div class="error-box">{{ error }}</div>
+    {% endif %}
+
+    <footer>
+      <p>Flask & Random Forest</p>
+    </footer>
+  </div>
+
+  <script>
+    // ==== Auto-fill contoh data ====
+    function fillExample(type) {
+      if (type === 'placed') {
+        document.getElementById('iq').value = 120;
+        document.getElementById('prev_sem').value = 8.5;
+        document.getElementById('cgpa').value = 8.7;
+        document.getElementById('academic_perf').value = 9;
+        document.getElementById('internship').value = 'Yes';
+        document.getElementById('extracurricular').value = 8;
+        document.getElementById('communication').value = 9;
+        document.getElementById('projects').value = 4;
+      } else {
+        document.getElementById('iq').value = 95;
+        document.getElementById('prev_sem').value = 6.1;
+        document.getElementById('cgpa').value = 6.0;
+        document.getElementById('academic_perf').value = 6;
+        document.getElementById('internship').value = 'No';
+        document.getElementById('extracurricular').value = 4;
+        document.getElementById('communication').value = 5;
+        document.getElementById('projects').value = 1;
+      }
+    }
+
+    // ==== Clear hasil prediksi ====
+    function clearResult() {
+      document.getElementById('predictionForm').reset();
+      const resultBox = document.querySelector('.result-box');
+      if (resultBox) resultBox.remove();
+    }
+  </script>
+</body>
+</html>

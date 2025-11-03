@@ -2,8 +2,9 @@ __pycache__/
 *.pyc
 .env
 .ipynb_checkpoints/
+# abaikan semua .pkl kecuali model placement
 *.pkl
-*.joblib
+!model/random_forest_placement.pkl
 venv/
 .env/
 .DS_Store

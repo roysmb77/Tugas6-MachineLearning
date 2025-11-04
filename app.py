@@ -47,5 +47,6 @@ def predict():
         session['error'] = f"Terjadi kesalahan: {str(e)}"
         return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080)) app.run(host="0.0.0.0", port=port)
+

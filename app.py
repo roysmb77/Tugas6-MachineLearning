@@ -36,7 +36,7 @@ def predict():
         prediction = model.predict(features)[0]
         probability = model.predict_proba(features)[0][1] * 100
 
-        result_text = "🎓 Selamat! Mahasiswa berpotensi besar ditempatkan." if prediction == 1 else "⚠️ Mahasiswa belum memenuhi kriteria penempatan."
+        result_text = "✅ Mahasiswa berpotensi besar diterima dalam program penempatan kerja." if prediction == 1 else "⚠️ Mahasiswa belum memenuhi kriteria penempatan."
 
         # Simpan hasil ke session, lalu redirect ke halaman utama
         session['prediction'] = result_text
